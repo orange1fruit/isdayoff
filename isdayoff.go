@@ -57,43 +57,43 @@ var boolToStr = map[bool]string{
 // Params contains various filters for request
 type Params struct {
 	Year        int
-	Month       *time.Month
-	Day         *int
-	CountryCode *CountryCode
-	Pre         *bool
-	Covid       *bool
-	TZ          *string
+	Month       time.Month
+	Day         int
+	CountryCode CountryCode
+	Pre         bool
+	Covid       bool
+	TZ          string
 }
 
 // GetBy Get data by particular params
 func (c *Client) GetBy(params Params) ([]DayType, error) {
 	url := fmt.Sprintf("https://isdayoff.ru/api/getdata?year=%d", params.Year)
 	// ugly. change it later
-	if params.Month != nil {
-		if *params.Month < 10 {
-			url += fmt.Sprintf("&month=0%d", *params.Month)
+	if params.Month != 0 {
+		if params.Month < 10 {
+			url += fmt.Sprintf("&month=0%d", params.Month)
 		} else {
-			url += fmt.Sprintf("&month=%d", *params.Month)
+			url += fmt.Sprintf("&month=%d", params.Month)
 		}
 	}
-	if params.Day != nil {
-		if *params.Day < 10 {
-			url += fmt.Sprintf("&day=0%d", *params.Day)
+	if params.Day != 0 {
+		if params.Day < 10 {
+			url += fmt.Sprintf("&day=0%d", params.Day)
 		} else {
-			url += fmt.Sprintf("&day=%d", *params.Day)
+			url += fmt.Sprintf("&day=%d", params.Day)
 		}
 	}
-	if params.CountryCode != nil {
-		url += fmt.Sprintf("&cc=%v", *params.CountryCode)
+	if params.CountryCode != "" {
+		url += fmt.Sprintf("&cc=%v", params.CountryCode)
 	}
-	if params.Pre != nil {
-		url += fmt.Sprintf("&pre=%s", boolToStr[*params.Pre])
-	}
-	if params.Covid != nil {
-		url += fmt.Sprintf("&covid=%s", boolToStr[*params.Covid])
-	}
-	if params.TZ != nil {
-		url += fmt.Sprintf("&tz=%s", *params.TZ)
+	//if params.Pre != nil {
+	url += fmt.Sprintf("&pre=%s", boolToStr[params.Pre])
+	//}
+	//if params.Covid != nil {
+	url += fmt.Sprintf("&covid=%s", boolToStr[params.Covid])
+	//}
+	if params.TZ != "" {
+		url += fmt.Sprintf("&tz=%s", params.TZ)
 	}
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
@@ -143,17 +143,17 @@ func (c *Client) aliasRequest(alias string, params Params) (*DayType, error) {
 	}
 
 	q := req.URL.Query()
-	if params.CountryCode != nil {
-		q.Add("cc", string(*params.CountryCode))
+	if params.CountryCode != "" {
+		q.Add("cc", string(params.CountryCode))
 	}
-	if params.Pre != nil {
-		q.Add("pre ", boolToStr[*params.Pre])
-	}
-	if params.Covid != nil {
-		q.Add("covid", boolToStr[*params.Covid])
-	}
-	if params.TZ != nil {
-		q.Add("tz", string(*params.TZ))
+	//if params.Pre != nil {
+	q.Add("pre ", boolToStr[params.Pre])
+	//}
+	//if params.Covid != nil {
+	q.Add("covid", boolToStr[params.Covid])
+	//}
+	if params.TZ != "" {
+		q.Add("tz", string(params.TZ))
 	}
 
 	req.URL.RawQuery = q.Encode()

@@ -1,3 +1,3 @@
-module github.com/anatoliyfedorenko/isdayoff
+module github.com/orange1fruit/isdayoff
 
-go 1.13
+go 1.18

@@ -36,11 +36,11 @@ func TestGetByDay(t *testing.T) {
 	covid := false
 	days, err := client.GetBy(Params{
 		Year:        2020,
-		Month:       &month,
-		Day:         &day,
-		CountryCode: &countryCode,
-		Pre:         &pre,
-		Covid:       &covid,
+		Month:       month,
+		Day:         day,
+		CountryCode: countryCode,
+		Pre:         pre,
+		Covid:       covid,
 	})
 	if err != nil {
 		t.Error(err)
@@ -56,9 +56,9 @@ func TestToday(t *testing.T) {
 	pre := false
 	covid := false
 	day, err := client.Today(Params{
-		CountryCode: &countryCode,
-		Pre:         &pre,
-		Covid:       &covid,
+		CountryCode: countryCode,
+		Pre:         pre,
+		Covid:       covid,
 	})
 	if err != nil {
 		t.Error(err)
@@ -75,9 +75,9 @@ func TestTomorrow(t *testing.T) {
 	pre := false
 	covid := false
 	day, err := client.Tomorrow(Params{
-		CountryCode: &countryCode,
-		Pre:         &pre,
-		Covid:       &covid,
+		CountryCode: countryCode,
+		Pre:         pre,
+		Covid:       covid,
 	})
 	if err != nil {
 		t.Error(err)
